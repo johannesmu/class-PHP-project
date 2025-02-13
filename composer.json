@@ -1,0 +1,19 @@
+{
+    "name": "johannes/classproject",
+    "description": "a class project in php",
+    "type": "project",
+    "require": {
+        "twig/twig": "^3.19",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Johannes\\Classproject\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "johannes"
+        }
+    ]
+}
