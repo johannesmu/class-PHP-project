@@ -5,27 +5,21 @@ use \Exception;
 use Johannes\Classproject\Database;
 
 class Account extends Database {
-    private $connection;
     public function __construct()
     {
-        try 
-        {
-            $db = new Database();
-            if( !$db ) {
-                throw new Exception("no database available");
-            }
-            else {
-                $this -> connection = $db -> connection;
-            }
-        }
-        catch( Exception $exc )
-        {
-            exit( $exc -> getMessage() );
-        }
+        parent::__construct();
     }
     public function create( $email, $password ) 
     {
         // perform query to create an account with email and password
+        $create_query = "INSERT INTO Account (
+            email,
+            password,
+            reset,
+            active,
+            created
+            VALUES (?,?,?,TRUE,NOW() )
+        )";
     }
     public function update()
     {
