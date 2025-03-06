@@ -13,8 +13,13 @@
     <div class="container">
        <div class="row mt-4">
             <div class="col-md-4 offset-md-4">
-                <form method="post" action="/signup.php">
+                <form method="post" action="/signup.php" novalidate>
                     <h1>Sign up for an account</h1>
+                    {% if errors %}
+                        <div class="alert alert-danger">
+                            {{ errors }}
+                        </div>
+                    {% endif %}
                     <div class="mb-3">
                         <label class="form-label" for="email">Email Address</label>
                         <input name="email" id="email" class="form-control" type="email" placeholder="user@domain.com">
