@@ -1,5 +1,5 @@
 <?php
-namespace Johannes\Classproject\HashGenerator;
+namespace Johannes\Classproject;
 class HashGenerator {
     public static function ResetHash() {
         $str = time() . random_int( 0, 5000 );

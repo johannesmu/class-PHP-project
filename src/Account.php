@@ -4,8 +4,8 @@ namespace Johannes\Classproject;
 use \Exception;
 use Johannes\Classproject\Database;
 use Johannes\Classproject\Validator;
-use Validator as GlobalValidator;
-USE Johannes\Classproject\HashGenerator;
+use Johannes\Classproject\HashGenerator;
+
 
 class Account extends Database {
     public $errors = [];
@@ -17,11 +17,13 @@ class Account extends Database {
     public function create( $email, $password ) 
     {
         // perform query to create an account with email and password
-        $create_query = "INSERT INTO Account( email, password,reset,active, created) 
-        VALUES (?,?,?,1,NOW() )
-        )";
+        $create_query = "
+        INSERT INTO 
+        Account( email, password,reset,active,last_seen, created) 
+        VALUES ( ?, ?, ?, 1, NOW(), NOW() )";
         if( Validator::validateEmail($email) == false ) {
             // email is not in valid format
+            Validator::$errors;
             $this -> errors['email'] = "Email address is not valid";
         }
         if( Validator::validatePassword($password) == false ) {
@@ -35,8 +37,10 @@ class Account extends Database {
             return $this -> response;
         }
         // if there are no errors
-        $reset = md5( time() . random_int(0,5000));
-        $hashed = password_hash( $password, PASSWORD_DEFAULT);
+        //$test = HashGenerator::ResetHash();
+       // echo $test . "  length=" . strlen($test) ;
+        $reset = HashGenerator::ResetHash();
+        $hashed = HashGenerator::PasswordHash($password);
         // create a mysql prepared statement
         $statement = $this -> connection -> prepare( $create_query );
         // binding parameters to the query
