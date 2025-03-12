@@ -23,7 +23,7 @@ class Account extends Database {
         VALUES ( ?, ?, ?, 1, NOW(), NOW() )";
         if( Validator::validateEmail($email) == false ) {
             // email is not in valid format
-            Validator::$errors;
+        
             $this -> errors['email'] = "Email address is not valid";
         }
         if( Validator::validatePassword($password) == false ) {
