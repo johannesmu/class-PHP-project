@@ -37,6 +37,7 @@ class Database extends App {
             }
             else {
                 throw new Exception("Database credentials not loaded");
+                
             }
         }
         catch( Exception $exc ) 
