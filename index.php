@@ -13,8 +13,8 @@ $items = $book -> get();
 
 $site_name = $app -> site_name;
 // create data variables
-$page_title = "Class Project Home Page";
-$greeting = "Welcome to my website";
+$page_title = "$site_name Book Club";
+$greeting = "Welcome to $site_name";
 
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
