@@ -16,13 +16,15 @@ class Book extends Database
     {
         $get_query = "
             SELECT 
+            UUID() as row_id,
             Book.id AS id,
             Book.title AS title,
             Book.tagline AS tagline,
             Book.year AS year,
             Book.image AS image,
             Author.author_first AS first,
-            Author.author_last AS last
+            Author.author_last AS last,
+            CONCAT( Author.author_first, ' ', Author.author_last )
             FROM 
             `Book` 
             INNER JOIN Book_Author ON Book_Author.book_id = Book.id
