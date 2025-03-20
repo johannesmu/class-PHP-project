@@ -18,12 +18,19 @@
     <div class="container mt-3">
         <div class="row">
             {% for item in items %}
-             <div class="col-md-3">
-                <div class="card" style="min-height: 32rem;">
+             <div class="col-md-3 mb-3">
+                <div class="card" style="min-height: 30rem;">
                     <div class="card-body">
-                        <img src="assets/cover_images/{{item.image}}" class="card-img-top" alt="Book Cover for {{item.title}}">
-                        <h5 class="card-title">{{item.title}}</h5>
+                        <img src="assets/cover_images/{{item.image}}" 
+                            class="card-img-top" 
+                            alt="Book Cover for {{item.title}}"
+                            style="aspect-ratio: 3/4;object-fit: contain;"
+                        >
+                        <h5 class="card-title" style="min-height: 48px;">
+                            {{item.title}}
+                        </h5>
                         <p class="card-text">By {{item.author }}</p>
+                        <a href="detail.php?id={{item.id}}" class="btn btn-info">View detail</a>
                     </div>
                 </div>
              </div>
