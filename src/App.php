@@ -21,11 +21,23 @@ class App {
             $dotenv = Dotenv::createImmutable($app_dir);
             $dotenv->load();
             $this -> site_name = $_ENV['SITENAME'];
+            $this -> setTimeZone();
         }
         catch ( Exception $exception) {
             $msg = $exception -> getMessage();
             exit($msg);
         }
+    }
+    private function setTimeZone() {
+        try{
+            if(! date_default_timezone_set( $_ENV['TIMEZONE'] ) ) {
+                throw new Exception("Timezone data is not valid");
+            }
+        }
+        catch( Exception $exception ) {
+            $msg = $exception -> getMessage();
+            exit($msg);
+        }    
     }
 }
 ?>
