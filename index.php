@@ -3,6 +3,10 @@ require_once 'vendor/autoload.php';
 // classes used in this page
 use Johannes\Classproject\App;
 use Johannes\Classproject\Book;
+use Johannes\Classproject\SessionManager;
+
+//start session
+SessionManager::init();
 
 // create app from App class
 $app = new App();
