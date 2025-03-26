@@ -6,6 +6,12 @@ use Johannes\Classproject\Book;
 // create app from App class
 $app = new App();
 $book = new Book();
+$detail = [];
+// process the GET request to get the ID of the book
+if( $_SERVER['REQUEST_METHOD'] == 'GET' && $_GET['id'] ) {
+    $detail = $book -> getDetail( $_GET['id']);
+}
+
 
 $site_name = $app -> site_name;
 // create data variables
@@ -19,7 +25,7 @@ $template = $twig -> load( 'detail.twig' );
 // render the ouput
 echo $template -> render( [ 
     'title' => $page_title, 
-    'greeting' => $greeting,
+    'book' => $detail,
     'website_name' => $site_name
 ] );
 

@@ -16,8 +16,17 @@
 <body>
     {% include 'navigation.twig' %}
     <div class="container mt-3">
+
         <div class="row">
-           
+            <div class="col-md-6">
+                <img src="assets/cover_images/{{ book.image}}" class="img-fluid w-100">
+            </div>
+            <div class="col-md-6">
+                <h3>{{ book.title }}</h3>
+                <h4>{{ book.tagline }}</h4>
+                <h5>By {{ book.author }}</h5>
+                <p>{{ book.summary }}</p>
+            </div>
         </div>
     </div>
     {% include 'footer.twig' %}
