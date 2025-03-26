@@ -6,12 +6,15 @@ use Johannes\Classproject\Book;
 // create app from App class
 $app = new App();
 $book = new Book();
+// book detail
+$detail = array();
+if( $_GET['id'] ) {
+    $detail = $book -> getDetail( $_GET['id'] );
+}
 
 $site_name = $app -> site_name;
 // create data variables
-$page_title = "$site_name Book Club";
-$greeting = "Welcome to $site_name";
-
+$page_title = "Detail for " . $detail['title'];
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment( $loader );
@@ -19,8 +22,8 @@ $template = $twig -> load( 'detail.twig' );
 // render the ouput
 echo $template -> render( [ 
     'title' => $page_title, 
-    'greeting' => $greeting,
-    'website_name' => $site_name
+    'website_name' => $site_name,
+    'detail' => $detail
 ] );
 
 

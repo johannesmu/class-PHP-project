@@ -17,7 +17,34 @@
     {% include 'navigation.twig' %}
     <div class="container mt-3">
         <div class="row">
-           
+           <div class="col-md-4">
+                <img src="/assets/cover_images/{{ detail.image }}" class="img-fluid">
+           </div>
+           <div class="col-md-8">
+                <h2>{{ detail.title }}</h2>
+                <h5>{{ detail.tagline }}</h5>
+                <h5>By {{ detail.author }}</h5>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="text-uppercase">Year Published : </span>
+                        {{ detail.year }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-uppercase">Pages : </span>
+                        {{ detail.pages }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-uppercase">ISBN 10 : </span>
+                        {{ detail.isbn10 }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-uppercase">ISBN 13 : </span>
+                        {{ detail.isbn13 }}
+                    </li>
+                </ul>
+                <h4>Summary</h4>
+                <p>{{ detail.summary }}</p>
+           </div>
         </div>
     </div>
     {% include 'footer.twig' %}
