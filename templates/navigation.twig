@@ -24,12 +24,22 @@
       <ul class="navbar-nav ms-4 mb-2 mb-lg-0">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
+            <!-- Account -->
+            <i class="fa-solid fa-user"></i>
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="/signup.php">Signup</a></li>
             <li><a class="dropdown-item" href="/login.php">Login</a></li>
+            {% if loggedin == true %}
+            <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
+            {% endif %}
           </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/favourites.php">
+            <!-- Favourites -->
+            <i class="fa-solid fa-heart"></i>
+          </a>
         </li>
       </ul>
     </div>

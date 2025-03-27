@@ -14,8 +14,11 @@ $items = $book -> get();
 $site_name = $app -> site_name;
 // create data variables
 $page_title = "$site_name Book Club";
-$greeting = "Welcome to $site_name";
-
+// checking if user is logged in
+$isauthenticated = false;
+if( isset( $_SESSION['email'] ) ) {
+    $isauthenticated = true;
+}
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment( $loader );
@@ -23,8 +26,8 @@ $template = $twig -> load( 'page.twig' );
 // render the ouput
 echo $template -> render( [ 
     'title' => $page_title, 
-    'greeting' => $greeting,
     'website_name' => $site_name,
-    'items' => $items
+    'items' => $items,
+    'loggedin' => $isauthenticated
 ] );
 ?>

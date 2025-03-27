@@ -13,6 +13,11 @@ if( $_GET['id'] ) {
 }
 
 $site_name = $app -> site_name;
+// checking if user is logged in
+$isauthenticated = false;
+if( isset( $_SESSION['email'] ) ) {
+    $isauthenticated = true;
+}
 // create data variables
 $page_title = "Detail for " . $detail['title'];
 // Loading the twig template
@@ -23,7 +28,8 @@ $template = $twig -> load( 'detail.twig' );
 echo $template -> render( [ 
     'title' => $page_title, 
     'website_name' => $site_name,
-    'detail' => $detail
+    'detail' => $detail,
+    'loggedin' => $isauthenticated
 ] );
 
 
