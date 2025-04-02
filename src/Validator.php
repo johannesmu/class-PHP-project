@@ -1,7 +1,7 @@
 <?php
 namespace Johannes\Classproject;
 class Validator {
-    public array $errors = []; 
+    public static array $errors = []; 
     public static function validateEmail( $email ) {
         
         $legal_email_characters = "abcdefghijklmnopqrstuvwxyz1234567890@.+-_";

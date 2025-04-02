@@ -24,6 +24,7 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     if( $account -> response['success'] == true ) {
         // account has been created set the session variable
         $_SESSION['email'] = $email;
+        header("location: /");
     }
     else {
         // there are errors

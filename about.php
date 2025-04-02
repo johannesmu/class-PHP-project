@@ -9,7 +9,14 @@ $site_name = $app -> site_name;
 
 // create data variables
 $page_title = $site_name . " | " . "About Page";
-$greeting = "About " . $site_name;
+
+// checking if user is logged in
+$isauthenticated = false;
+$email = null;
+if( isset( $_SESSION['email'] ) ) {
+    $isauthenticated = true;
+    $email = $_SESSION['email'];
+}
 
 //// Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
@@ -19,7 +26,7 @@ $template = $twig -> load( 'about.twig' );
 // render the ouput
 echo $template -> render( [ 
     'title' => $page_title, 
-    'greeting' => $greeting,
-    'website_name' => $site_name 
+    'website_name' => $site_name,
+    'email' => $email
 ] );
 ?>
