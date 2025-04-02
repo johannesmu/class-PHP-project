@@ -17,10 +17,12 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     $email = $_POST['email'];
     // store password from form in a variable
     $password = $_POST['password'];
+    // store username from form in a variable
+    $username = $_POST['username'];
     // create an instance of account class
     $account = new Account();
     // call the create method in account
-    $account -> create($email,$password);
+    $account -> create($email,$password,$username);
     if( $account -> response['success'] == true ) {
         // account has been created set the session variable
         $_SESSION['email'] = $email;

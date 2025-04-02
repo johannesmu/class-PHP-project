@@ -4,7 +4,7 @@ namespace Johannes\Classproject;
 use \Exception;
 use Johannes\Classproject\Database;
 use Johannes\Classproject\Validator;
-use Validator as GlobalValidator;
+use Johannes\Classproject\User;
 
 class Account extends Database {
     public $errors = [];
@@ -13,7 +13,7 @@ class Account extends Database {
     {
         parent::__construct();
     }
-    public function create( $email, $password ) 
+    public function create( $email, $password, $username ) 
     {
         // perform query to create an account with email and password
         $create_query = "
@@ -44,9 +44,15 @@ class Account extends Database {
         // binding parameters to the query
         $statement -> bind_param("sssss", $email, $hashed , $reset, $created, $created );
         if( $statement -> execute() ) {
+            // account creation success
             $this -> response['success'] = 1;
+            // create the user profile
+            $account_id = $this -> connection -> insert_id;
+            $user = new User();
+            $user -> create( $account_id, $username );
         }
         else {
+            // account creation failed
             $this -> response['success'] = 0;
             $this -> errors['failed to execute'];
             $this -> response['errors'] = $this -> errors;
