@@ -19,8 +19,9 @@ class Account extends Database {
         // perform query to create an account with email and password
         $create_query = "
         INSERT INTO 
-        Account( email, password,reset,active,last_seen, created) 
-        VALUES ( ?, ?, ?, 1, NOW(), NOW() )";
+        Account ( email, password,reset,active, last_seen ,created) 
+        VALUES (?,?,?,1,?, ?)
+        ";
         if( Validator::validateEmail($email) == false ) {
             // email is not in valid format
         
@@ -37,14 +38,13 @@ class Account extends Database {
             return $this -> response;
         }
         // if there are no errors
-        //$test = HashGenerator::ResetHash();
-       // echo $test . "  length=" . strlen($test) ;
-        $reset = HashGenerator::ResetHash();
-        $hashed = HashGenerator::PasswordHash($password);
+        $reset = md5( time() . random_int(0,5000));
+        $hashed = password_hash( $password, PASSWORD_DEFAULT);
+        $created = date('Y-m-d H:i:s', time() );
         // create a mysql prepared statement
         $statement = $this -> connection -> prepare( $create_query );
         // binding parameters to the query
-        $statement -> bind_param("sss", $email, $hashed , $reset );
+        $statement -> bind_param("sssss", $email, $hashed , $reset, $created, $created );
         if( $statement -> execute() ) {
             $this -> response['success'] = 1;
         }

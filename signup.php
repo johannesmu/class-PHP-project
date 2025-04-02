@@ -22,7 +22,8 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     // call the create method in account
     $account -> create($email,$password);
     if( $account -> response['success'] == true ) {
-        // account has been created
+        // account has been created set the session variable
+        $_SESSION['email'] = $email;
     }
     else {
         // there are errors

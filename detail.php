@@ -6,18 +6,20 @@ use Johannes\Classproject\Book;
 // create app from App class
 $app = new App();
 $book = new Book();
-$detail = [];
-// process the GET request to get the ID of the book
-if( $_SERVER['REQUEST_METHOD'] == 'GET' && $_GET['id'] ) {
-    $detail = $book -> getDetail( $_GET['id']);
+// book detail
+$detail = array();
+if( $_GET['id'] ) {
+    $detail = $book -> getDetail( $_GET['id'] );
 }
 
-
 $site_name = $app -> site_name;
+// checking if user is logged in
+$isauthenticated = false;
+if( isset( $_SESSION['email'] ) ) {
+    $isauthenticated = true;
+}
 // create data variables
-$page_title = "$site_name Book Club";
-$greeting = "Welcome to $site_name";
-
+$page_title = "Detail for " . $detail['title'];
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment( $loader );
@@ -25,8 +27,9 @@ $template = $twig -> load( 'detail.twig' );
 // render the ouput
 echo $template -> render( [ 
     'title' => $page_title, 
-    'book' => $detail,
-    'website_name' => $site_name
+    'website_name' => $site_name,
+    'detail' => $detail,
+    'loggedin' => $isauthenticated
 ] );
 
 

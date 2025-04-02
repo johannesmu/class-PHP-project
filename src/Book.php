@@ -51,21 +51,25 @@ class Book extends Database
             Book.tagline AS tagline,
             Book.year AS year,
             Book.image AS image,
-            Book.summary AS summary,
+            Book.isbn10,
+            Book.isbn13,
+            Book.pages,
+            Book.summary,
+            Book.tags,
             CONCAT( Author.author_first, ' ', Author.author_last) AS author
             FROM 
             `Book` 
             INNER JOIN Book_Author ON Book_Author.book_id = Book.id
             INNER JOIN Author ON Book_Author.author_id = Author.author_id
-            WHERE Book.visible=1 AND Book.id=?
-            GROUP BY Book.id
+            WHERE Book.visible=1 AND Book.id = ?
+            GROUP BY Book.id 
         ";
         $statement = $this -> connection -> prepare( $detail_query );
-        // bind the $id as an integer ("i")
-        $statement -> bind_param("i",$id);
+        $statement -> bind_param("i", $id );
         $statement -> execute();
+        $book_detail = array();
         $result = $statement -> get_result();
-        $book = $result -> fetch_assoc();
-        return $book;
+        $book_detail = $result -> fetch_assoc();
+        return $book_detail;
     }
 }
