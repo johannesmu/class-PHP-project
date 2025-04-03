@@ -28,10 +28,12 @@
             <i class="fa-solid fa-user"></i>
           </a>
           <ul class="dropdown-menu">
+            {% if loggedin == true %}
+            <li><a class="dropdown-item" href="/profile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
+            {% else %}
             <li><a class="dropdown-item" href="/signup.php">Signup</a></li>
             <li><a class="dropdown-item" href="/login.php">Login</a></li>
-            {% if loggedin == true %}
-            <li><a class="dropdown-item" href="/logout.php">Logout</a></li>
             {% endif %}
           </ul>
         </li>

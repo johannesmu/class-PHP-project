@@ -49,7 +49,11 @@ class Account extends Database {
             // create the user profile
             $account_id = $this -> connection -> insert_id;
             $user = new User();
-            $user -> create( $account_id, $username );
+            $create = $user -> create( $account_id, $username );
+            // if( $create['success'] == false ) {
+            //     $this -> response['success'] = false;
+            //     $this -> errors['username already taken'];
+            // }
         }
         else {
             // account creation failed

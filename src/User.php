@@ -5,6 +5,7 @@ use Johannes\Classproject\Database;
 use \Exception;
 
 class User extends Database {
+    private $response = array();
     public function __construct()
     {
         parent::__construct();
@@ -20,18 +21,20 @@ class User extends Database {
         $timestamp = date('Y-m-d H:i:s', time() );
         $statement -> bind_param("isss", $account_id, $name, $timestamp, $timestamp );
         try {
-            if( $statement -> execute() ) {
-                // success
-            }
-            else {
-                // errors
-                throw new Exception( $this -> connection -> connect_errno ) ;
-            }
+           if( $this -> checkIfExists($name) ) {
+                $statement -> execute();
+                $response['success'] = true;
+           }
+           else {
+                throw new Exception("username is already taken");
+           }
         } 
         catch( Exception $exception) {
             // handle the exception
-            echo $exception -> getMessage();
+            $response['success'] = false;
+            $response['error'] = $exception -> getMessage();
         }
+        return $response;
     }
     public function checkIfExists ($username) {
         $check_query = "

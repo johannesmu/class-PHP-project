@@ -3,10 +3,13 @@ require_once 'vendor/autoload.php';
 // classes used in this page
 use Johannes\Classproject\App;
 use Johannes\Classproject\Account;
+use Johannes\Classproject\SessionManager;
 
 // create app from App class
 $app = new App();
 $site_name = $app -> site_name;
+// inititialise session
+SessionManager::init();
 // create data variables
 $page_title = "Signup for an account";
 $signup_errors = [];
@@ -26,6 +29,7 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     if( $account -> response['success'] == true ) {
         // account has been created set the session variable
         $_SESSION['email'] = $email;
+        header("location: / ");
     }
     else {
         // there are errors
