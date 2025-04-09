@@ -47,14 +47,23 @@ class Account extends Database {
         if( $statement -> execute() ) {
             // account creation success
             $this -> response['success'] = 1;
-            // create the user profile
+            // get the id of the new account
             $account_id = $this -> connection -> insert_id;
+            // create the user profile
             $user = new User();
-            $create = $user -> create( $account_id, $username );
-            // if( $create['success'] == false ) {
-            //     $this -> response['success'] = false;
-            //     $this -> errors['username already taken'];
-            // }
+            $create_user = $user -> create( $account_id, $username );
+            if( $create_user['success'] == true ) {
+                // user created successfully
+            }
+            else{
+                // there was a problem creating user
+                $this -> response['success'] = false;
+                $this -> errors['username'] = implode(',', $create_user['errors']);
+                $this -> response['errors'] = $this -> errors;
+                //print_r( $this -> response['errors']);
+                // delete the account if user is not created
+                $this -> deleteAccount($account_id);
+            }
         }
         else {
             // account creation failed
@@ -76,5 +85,16 @@ class Account extends Database {
     {
 
     }
-}
+    private function deleteAccount( $id) {
+        $delete_query = "DELETE FROM Account WHERE id=?";
+        $statement = $this -> connection -> prepare( $delete_query );
+        $statement -> bind_param("i",$id );
+        if( $statement -> execute() ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+} 
 ?>

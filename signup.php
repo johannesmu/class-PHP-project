@@ -25,15 +25,16 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     // create an instance of account class
     $account = new Account();
     // call the create method in account
-    $account -> create($email,$password,$username);
-    if( $account -> response['success'] == true ) {
+    $account_create = $account -> create($email,$password,$username);
+    if( $account_create['success'] == true ) {
         // account has been created set the session variable
         $_SESSION['email'] = $email;
         header("location: / ");
     }
     else {
         // there are errors
-        $signup_errors = implode( "," , $account -> response['errors']);
+        print_r($account_create);
+       // $signup_errors = implode( "," , $account_create['errors']);
     }
 }
 

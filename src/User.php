@@ -5,7 +5,8 @@ use Johannes\Classproject\Database;
 use \Exception;
 
 class User extends Database {
-    private $response = array();
+    public $response = array();
+    public $errors = array();
     public function __construct()
     {
         parent::__construct();
@@ -26,16 +27,19 @@ class User extends Database {
                 $response['success'] = true;
            }
            else {
+                // username is already taken
                 throw new Exception("username is already taken");
            }
         } 
         catch( Exception $exception) {
             // handle the exception
-            $response['success'] = false;
-            $response['error'] = $exception -> getMessage();
+            $this -> response['success'] = false;
+            array_push(  $this -> errors , $exception -> getMessage() );
         }
-        return $response;
+        $this -> response['errors'] = $this -> errors;
+        return $this -> response;
     }
+
     public function checkIfExists ($username) {
         $check_query = "
         SELECT COUNT(name) as total FROM `User` WHERE name=?
@@ -47,11 +51,11 @@ class User extends Database {
         $count = $result -> fetch_assoc();
         if( $count['total'] > 0 ) {
             // the user already exists
-            return false;
+            return true;
         }
         else {
             // no username of the same value in database
-            return true;
+            return false;
         }
     }
 
