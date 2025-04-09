@@ -29,6 +29,14 @@ class Account extends Database {
             // password is not valid
             $this -> errors['password'] = "Password does not meet requirements";
         }
+        if( Validator::validateUsername($username) == false ) {
+            $this -> errors['username'] = "Username does not meet requirements";
+        }
+        // check if username already exists
+        $user = new User();
+        if( $user -> checkIfExists($username) ) {
+            $this -> errors['username'] = "Username already exists";
+        }
         // if there are errors, return the response
         if( count($this -> errors) > 0 ) {
             $this -> response['success'] = 0;
@@ -48,7 +56,7 @@ class Account extends Database {
             $this -> response['success'] = 1;
             // create the user profile
             $account_id = $this -> connection -> insert_id;
-            $user = new User();
+           
             $create = $user -> create( $account_id, $username );
             // if( $create['success'] == false ) {
             //     $this -> response['success'] = false;
