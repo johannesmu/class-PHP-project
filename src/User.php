@@ -1,32 +1,59 @@
 <?php
-
 namespace Johannes\Classproject;
 
-use Johannes\Classproject\Account;
+use Johannes\Classproject\Database;
+use \Exception;
 
-class User extends Account
-{
+class User extends Database {
+    private $response = array();
     public function __construct()
     {
         parent::__construct();
     }
-    public function get($account_id)
-    {
-        $get_query = "
-            SELECT
-                id,
-                account_id,
-                name,
-                image,
-                about,
-                city,
-                country,
-                created,
-                updated,
-                active
-                FROM User
-                WHERE account_id = ?
+    public function create( $account_id, $name ) {
+        $create_query = "
+        INSERT INTO User
+        (account_id,name,updated,created)
+        VALUES
+        (?,?,?,?)
         ";
-        $statement = $this -> connection -> prepare( $get_query );
+        $statement = $this -> connection -> prepare( $create_query);
+        $timestamp = date('Y-m-d H:i:s', time() );
+        $statement -> bind_param("isss", $account_id, $name, $timestamp, $timestamp );
+        try {
+           if( $this -> checkIfExists($name) ) {
+                $statement -> execute();
+                $response['success'] = true;
+           }
+           else {
+                throw new Exception("username is already taken");
+           }
+        } 
+        catch( Exception $exception) {
+            // handle the exception
+            $response['success'] = false;
+            $response['error'] = $exception -> getMessage();
+        }
+        return $response;
     }
+    public function checkIfExists ($username) {
+        $check_query = "
+        SELECT COUNT(name) as total FROM `User` WHERE name=?
+        ";
+        $statement = $this -> connection -> prepare($check_query);
+        $statement -> bind_param('s',$username);
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $count = $result -> fetch_assoc();
+        if( $count['total'] > 0 ) {
+            // the user already exists
+            return false;
+        }
+        else {
+            // no username of the same value in database
+            return true;
+        }
+    }
+
 }
+?>
