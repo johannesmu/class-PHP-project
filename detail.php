@@ -15,8 +15,14 @@ if( $_GET['id'] ) {
 $site_name = $app -> site_name;
 // checking if user is logged in
 $isauthenticated = false;
+$username = '';
+$email = '';
+$id = '';
 if( isset( $_SESSION['email'] ) ) {
     $isauthenticated = true;
+    $id = $_SESSION['id'];
+    $username = $_SESSION['username'];
+    $email = $_SESSION['email'];
 }
 // create data variables
 $page_title = "Detail for " . $detail['title'];
@@ -29,7 +35,10 @@ echo $template -> render( [
     'title' => $page_title, 
     'website_name' => $site_name,
     'detail' => $detail,
-    'loggedin' => $isauthenticated
+    'loggedin' => $isauthenticated,
+    'username' => $username,
+    'email' => $email,
+    'id' => $id
 ] );
 
 

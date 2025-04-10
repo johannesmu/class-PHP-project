@@ -16,8 +16,14 @@ $site_name = $app -> site_name;
 $page_title = "$site_name Book Club";
 // checking if user is logged in
 $isauthenticated = false;
+$username = '';
+$email = '';
+$id = '';
 if( isset( $_SESSION['email'] ) ) {
     $isauthenticated = true;
+    $id = $_SESSION['id'];
+    $username = $_SESSION['username'];
+    $email = $_SESSION['email'];
 }
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
@@ -28,6 +34,9 @@ echo $template -> render( [
     'title' => $page_title, 
     'website_name' => $site_name,
     'items' => $items,
-    'loggedin' => $isauthenticated
+    'loggedin' => $isauthenticated,
+    'username' => $username,
+    'email' => $email,
+    'id' => $id
 ] );
 ?>

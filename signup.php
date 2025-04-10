@@ -25,10 +25,12 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     // create an instance of account class
     $account = new Account();
     // call the create method in account
-    $account -> create($email,$password,$username);
-    if( $account -> response['success'] == true ) {
+    $create = $account -> create($email,$password,$username);
+    if( $create['success'] == true ) {
         // account has been created set the session variable
         $_SESSION['email'] = $email;
+        $_SESSION['username'] = $create['data']['name'];
+        $_SESSION['id'] = $create['data']['id'];
         header("location: / ");
     }
     else {

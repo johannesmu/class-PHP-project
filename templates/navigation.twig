@@ -25,7 +25,14 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <!-- Account -->
+            {% if loggedin == true %}
+            <span>
+              {{username}}
+            </span>
+            {% else %}
             <i class="fa-solid fa-user"></i>
+            {% endif %}
+            
           </a>
           <ul class="dropdown-menu">
             {% if loggedin == true %}

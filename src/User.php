@@ -20,21 +20,22 @@ class User extends Database {
         $statement = $this -> connection -> prepare( $create_query);
         $timestamp = date('Y-m-d H:i:s', time() );
         $statement -> bind_param("isss", $account_id, $name, $timestamp, $timestamp );
-        try {
-           if( $this -> checkIfExists($name) ) {
-                $statement -> execute();
-                $response['success'] = true;
-           }
-           else {
-                throw new Exception("username is already taken");
-           }
-        } 
-        catch( Exception $exception) {
-            // handle the exception
-            $response['success'] = false;
-            $response['error'] = $exception -> getMessage();
-        }
-        return $response;
+        $statement -> execute();
+        // try {
+        //    if( $this -> checkIfExists($name) ) {
+        //         $statement -> execute();
+        //         $response['success'] = true;
+        //    }
+        //    else {
+        //         throw new Exception("username is already taken");
+        //    }
+        // } 
+        // catch( Exception $exception) {
+        //     // handle the exception
+        //     $response['success'] = false;
+        //     $response['error'] = $exception -> getMessage();
+        // }
+        return true;
     }
     public function checkIfExists ($username) {
         $check_query = "
@@ -47,11 +48,11 @@ class User extends Database {
         $count = $result -> fetch_assoc();
         if( $count['total'] > 0 ) {
             // the user already exists
-            return false;
+            return true;
         }
         else {
             // no username of the same value in database
-            return true;
+            return false;
         }
     }
 

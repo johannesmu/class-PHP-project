@@ -39,7 +39,7 @@ class Account extends Database {
         }
         // if there are errors, return the response
         if( count($this -> errors) > 0 ) {
-            $this -> response['success'] = 0;
+            $this -> response['success'] = false;
             $this -> response['errors'] = $this -> errors;
             return $this -> response;
         }
@@ -52,21 +52,83 @@ class Account extends Database {
         // binding parameters to the query
         $statement -> bind_param("sssss", $email, $hashed , $reset, $created, $created );
         if( $statement -> execute() ) {
-            // account creation success
-            $this -> response['success'] = 1;
             // create the user profile
             $account_id = $this -> connection -> insert_id;
            
             $create = $user -> create( $account_id, $username );
-            // if( $create['success'] == false ) {
-            //     $this -> response['success'] = false;
-            //     $this -> errors['username already taken'];
-            // }
+            $userdata = array(
+                'username' => $username,
+                'email' => $email,
+                'lastseen' => $created,
+                'created' => $created,
+                'id' => $account_id
+            );
+            // account and user creation success
+            $this -> response['success'] = 1;
+            $this -> response['data'] = $userdata;
+            return $this -> response;
         }
         else {
             // account creation failed
             $this -> response['success'] = 0;
             $this -> errors['failed to execute'];
+            $this -> response['errors'] = $this -> errors;
+        }
+        return $this -> response;
+    }
+    public function login( $email, $password ) {
+        $login_query = "
+        SELECT 
+        Account.id as id,
+        email,
+        password,
+        last_seen,
+        Account.created as created,
+        User.name as name
+        FROM Account 
+        INNER JOIN User
+  		ON Account.id = User.account_id
+        WHERE email=?
+        AND active=1
+        ";
+        $statement = $this -> connection -> prepare( $login_query );
+        $statement -> bind_param("s", $email );
+        try {
+            if( ! $statement -> execute() ) {
+                throw new Exception("database error");
+            }
+            else {
+                $result = $statement -> get_result();
+                // count how many rows returned
+                if( $result -> num_rows == 0 ) {
+                    throw new Exception("the account does not exist");
+                }
+                else {
+                    // account exists now check the password
+                    $acc = $result -> fetch_assoc();
+                    if( !password_verify($password, $acc['password'])) {
+                        throw new Exception("wrong password");
+                    }
+                    else {
+                        // password matches
+                        $this -> response['success'] = true; 
+                        $userdata = array(
+                            'username' => $acc['name'],
+                            'email' => $acc['email'],
+                            'lastseen' => $acc['last_seen'],
+                            'created' => $acc['created'],
+                            'id' => $acc['id']
+                        );
+                        $this -> response['data'] = $userdata;
+                    }
+                }
+            }
+        }
+        catch( Exception $exc ) {
+            $this -> errors['authentication'] = $exc -> getMessage();
+        }
+        if( count( $this -> errors) > 0 ) {
+            $this -> response['success'] = false;
             $this -> response['errors'] = $this -> errors;
         }
         return $this -> response;
