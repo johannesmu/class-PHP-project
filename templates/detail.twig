@@ -7,10 +7,10 @@
     {% include 'navigation.twig' %}
     <div class="container mt-3">
         <div class="row">
-           <div class="col-md-4">
+            <div class="col-md-4">
                 <img src="/assets/cover_images/{{ detail.image }}" class="img-fluid">
-           </div>
-           <div class="col-md-8">
+            </div>
+            <div class="col-md-8">
                 <h2>{{ detail.title }}</h2>
                 <h5>{{ detail.tagline }}</h5>
                 <h5>By {{ detail.author }}</h5>
@@ -35,9 +35,45 @@
                 <h4>Summary</h4>
                 <p>{{ detail.summary }}</p>
                 {% if loggedin == true %}
-                <button class="btn btn-primary">Review this book</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#review-modal">
+                    Review {{detail.title}}
+                </button>
                 {% endif %}
-           </div>
+            </div>
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="review-modal" tabindex="-1" aria-labelledby="reviewModalTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="reviewModalTitle">
+                            Write a review of {{detail.title}}
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="review-form" method="post" action="/detail.php">
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="review-title">Title for the review</label>
+                                <input class="form-control" id="review-title" type="text" name="review-title"
+                                    placeholder="{{ detail.title }} is a must read!">
+                            </div>
+                            <div class="form-group">
+                                <label for="review-text">Text for the review</label>
+                                <textarea class="form-control" id="review-text" cols="50" rows="5"
+                                    name="review-text"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     {% include 'footer.twig' %}
