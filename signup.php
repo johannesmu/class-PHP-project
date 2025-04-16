@@ -31,6 +31,7 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
         $_SESSION['email'] = $email;
         $_SESSION['username'] = $create['data']['username'];
         $_SESSION['id'] = $create['data']['id'];
+        // redirect user to home page
         header("location: / ");
     }
     else {
