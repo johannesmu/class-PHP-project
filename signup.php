@@ -27,9 +27,9 @@ if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
     // call the create method in account
     $create = $account -> create($email,$password,$username);
     if( $create['success'] == true ) {
-        // account has been created set the session variable
+        // account has been created set the session variables
         $_SESSION['email'] = $email;
-        $_SESSION['username'] = $create['data']['name'];
+        $_SESSION['username'] = $create['data']['username'];
         $_SESSION['id'] = $create['data']['id'];
         header("location: / ");
     }
