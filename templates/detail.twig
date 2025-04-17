@@ -35,12 +35,35 @@
                 <h4>Summary</h4>
                 <p>{{ detail.summary }}</p>
                 {% if loggedin == true %}
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#review-modal">
-                    Review {{detail.title}}
-                </button>
+                    {% if reviewed == true %}
+                        <button class="btn btn-primary" disabled data-bs-toggle="modal" data-bs-target="#review-modal">
+                            You have reviewed {{detail.title}}
+                        </button>
+                    {% else %}
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#review-modal">
+                            Review {{detail.title}}
+                        </button>
+                    {% endif %}
                 {% endif %}
             </div>
 
+        </div>
+        <!-- Reviews row -->
+        <div class="row mt-4">
+            {% if reviews|length > 0 %}
+            {% for review in reviews %}
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{review.title}}</h5>
+                            <p>{{ review.rating }} stars</p>
+                            <p>{{review.text}}</p>
+                            <p>by {{ review.username }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
         </div>
         <!-- Modal -->
         <div class="modal fade" id="review-modal" tabindex="-1" aria-labelledby="reviewModalTitle" aria-hidden="true">
@@ -52,13 +75,21 @@
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="review-form" method="post" action="/detail.php">
+                    <form id="review-form" method="post" action="/detail.php?id={{book_id}}">
                         <div class="modal-body">
 
                             <div class="form-group">
                                 <label for="review-title">Title for the review</label>
                                 <input class="form-control" id="review-title" type="text" name="review-title"
                                     placeholder="{{ detail.title }} is a must read!">
+                            </div>
+                            <div class="form-group">
+                                <label for="review-rating">Rating out of 5</label>
+                                <input name="rating" type="range" class="form-range" min="0" max="5" step="1" id="review-rating">
+                                <div class="d-flex justify-content-between">
+                                    <div>1 star</div>
+                                    <div>5 stars</div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="review-text">Text for the review</label>
