@@ -3,6 +3,7 @@ require_once 'vendor/autoload.php';
 // classes used in this page
 use Johannes\Classproject\App;
 use Johannes\Classproject\Book;
+use Johannes\Classproject\Favourite;
 
 // create app from App class
 $app = new App();
@@ -25,6 +26,14 @@ if( isset( $_SESSION['email'] ) ) {
     $username = $_SESSION['username'];
     $email = $_SESSION['email'];
 }
+// handle favourites submission
+if( $_SERVER['REQUEST_METHOD'] == "POST" ) {
+    $account_id = $_POST['account_id'];
+    $book_id = $_POST['book_id'];
+    $fav = new Favourite();
+    $create_fav = $fav -> create($account_id, $book_id);
+}
+
 // Loading the twig template
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment( $loader );

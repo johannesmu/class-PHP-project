@@ -20,7 +20,18 @@
                             {{item.title}}
                         </h5>
                         <p class="card-text">By {{item.author }}</p>
-                        <a href="/detail.php?id={{item.id}}" class="btn btn-info">View detail</a>
+                        <div class="d-flex justify-content-between">
+                            <a href="/detail.php?id={{item.id}}" class="btn btn-info">View detail</a>
+                            {% if loggedin == true %}
+                            <form action="/" method="post">
+                                <input type="hidden" name="account_id" value="{{id}}">
+                                <input type="hidden" name="book_id" value="{{item.id}}">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
              </div>
