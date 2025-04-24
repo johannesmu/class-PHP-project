@@ -35,10 +35,14 @@ class Favourite extends Database{
     public function get( $account_id ) {
         $get_query = "
         SELECT
-        id,
-        book_id
+        Favourite.id AS id,
+        book_id,
+        Book.title AS title,
+        Book.image AS image
         FROM 
         Favourite
+        INNER JOIN Book
+        ON book_id = Book.id
         WHERE active = 1
         AND account_id = ?
         ";
@@ -51,6 +55,20 @@ class Favourite extends Database{
             array_push( $favourites, $row );
         }
         return $favourites;
+    }
+    // method to delete favourite
+    public function delete( $fav_id ) {
+        $delete_query = "
+        DELETE FROM `Favourite` WHERE id = ?
+        ";
+        $statement = $this -> connection -> prepare( $delete_query );
+        $statement -> bind_param("i", $fav_id );
+        if( $statement -> execute() ) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 ?>
