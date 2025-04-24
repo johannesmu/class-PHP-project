@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+{% include 'head.twig' %}
+
+<body>
+    {% include 'navigation.twig' %}
+    <div class="container mt-3">
+        <div class="row">
+            {% for result in results %}
+            <div class="col-md-2  mb-3">
+                <div class="card">
+                    <img src="assets/cover_images/{{result.image}}" class="card-img-top" alt="Book Cover for {{fav.title}}"
+                        style="aspect-ratio: 3/4;object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="min-height: 48px;">
+                            {{result.title}}
+                        </h5>
+                        <div class="d-flex flex-row justify-content-between">
+                            <a href="/detail.php?id={{result.id}}" class="btn btn-info">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <!-- <h1>{{ greeting }}</h1> -->
+
+    </div>
+    {% include 'footer.twig' %}
+</body>
+
+</html>

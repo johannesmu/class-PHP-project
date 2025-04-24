@@ -71,4 +71,19 @@ class Book extends Database
         $book_detail = $result -> fetch_assoc();
         return $book_detail;
     }
+    public function search( $keyword ) {
+        $search_query="
+        SELECT id, title, image, year  FROM `Book` WHERE title LIKE ?
+        ";
+        $keyword = "%" . $keyword . "%";
+        $statement = $this -> connection -> prepare($search_query);
+        $statement -> bind_param("s", $keyword );
+        $statement -> execute();
+        $result = $statement -> get_result();
+        $search_results = array();
+        while( $row = $result -> fetch_assoc() ) {
+            array_push( $search_results, $row );
+        }
+        return $search_results;
+    }
 }

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Mar 27, 2025 at 12:26 AM
+-- Generation Time: Apr 24, 2025 at 02:07 AM
 -- Server version: 10.4.34-MariaDB-1:10.4.34+maria~ubu2004
--- PHP Version: 8.2.27
+-- PHP Version: 8.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,7 +43,8 @@ CREATE TABLE `Account` (
 
 INSERT INTO `Account` (`id`, `email`, `password`, `reset`, `active`, `last_seen`, `created`) VALUES
 (9, 'test1@test.com', '$2y$10$2bs19rR1fISycBztOTWZZ.7VxqG0fvHLnnkv9ev53rIUOhzSLjPYG', '1ca97f4f0d70e5bd23fb218784b07a31', 1, '2025-03-27 00:22:30', '2025-03-27 11:22:30'),
-(10, 'test2@test.com', '$2y$10$AX0DqfGYHH/lcsyyrOJxrOqJ56TuTpanwZJDcgAcbQcKLAK2RGxSy', 'b905511844e53094b95d8d3f28ce3bd5', 1, '2025-03-27 11:25:29', '2025-03-27 11:25:29');
+(10, 'test2@test.com', '$2y$10$AX0DqfGYHH/lcsyyrOJxrOqJ56TuTpanwZJDcgAcbQcKLAK2RGxSy', 'b905511844e53094b95d8d3f28ce3bd5', 1, '2025-03-27 11:25:29', '2025-03-27 11:25:29'),
+(11, 'heyuser@test.com', '$2y$10$yvmNQkhVDzJFW0dPbbJ2b.hmq3IOmOMwf6HL2HqW4lfqBIb5KAN6C', '6f5412d4d3553aef938f94755b0bba9a', 1, '2025-04-24 10:45:27', '2025-04-24 10:45:27');
 
 -- --------------------------------------------------------
 
@@ -192,6 +193,67 @@ INSERT INTO `Book_Author` (`id`, `author_id`, `book_id`) VALUES
 (25, 27, 20),
 (26, 2, 2);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Favourite`
+--
+
+CREATE TABLE `Favourite` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `Favourite`
+--
+
+INSERT INTO `Favourite` (`id`, `account_id`, `book_id`, `active`) VALUES
+(1, 11, 1, 1),
+(6, 11, 4, 1),
+(7, 11, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Review`
+--
+
+CREATE TABLE `Review` (
+  `id` int(11) NOT NULL,
+  `title` varchar(256) NOT NULL,
+  `text` varchar(1024) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `active` tinyint(1) NOT NULL,
+  `rating` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `User`
+--
+
+CREATE TABLE `User` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `User`
+--
+
+INSERT INTO `User` (`id`, `account_id`, `name`, `updated`, `created`) VALUES
+(1, 11, 'heyuser', '2025-04-24 10:45:27', '2025-04-24 10:45:27');
+
 --
 -- Indexes for dumped tables
 --
@@ -230,6 +292,27 @@ ALTER TABLE `Book_Author`
   ADD KEY `Book_Book` (`book_id`);
 
 --
+-- Indexes for table `Favourite`
+--
+ALTER TABLE `Favourite`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Favourite_account_id` (`account_id`),
+  ADD KEY `Favourite_book_id` (`book_id`);
+
+--
+-- Indexes for table `Review`
+--
+ALTER TABLE `Review`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `User`
+--
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `User_account_id` (`account_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -237,7 +320,7 @@ ALTER TABLE `Book_Author`
 -- AUTO_INCREMENT for table `Account`
 --
 ALTER TABLE `Account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `Admin`
@@ -264,6 +347,24 @@ ALTER TABLE `Book_Author`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `Favourite`
+--
+ALTER TABLE `Favourite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `Review`
+--
+ALTER TABLE `Review`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `User`
+--
+ALTER TABLE `User`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -279,6 +380,19 @@ ALTER TABLE `Admin`
 ALTER TABLE `Book_Author`
   ADD CONSTRAINT `Book_Author` FOREIGN KEY (`author_id`) REFERENCES `Author` (`author_id`),
   ADD CONSTRAINT `Book_Book` FOREIGN KEY (`book_id`) REFERENCES `Book` (`id`);
+
+--
+-- Constraints for table `Favourite`
+--
+ALTER TABLE `Favourite`
+  ADD CONSTRAINT `Favourite_account_id` FOREIGN KEY (`account_id`) REFERENCES `Account` (`id`),
+  ADD CONSTRAINT `Favourite_book_id` FOREIGN KEY (`book_id`) REFERENCES `Book` (`id`);
+
+--
+-- Constraints for table `User`
+--
+ALTER TABLE `User`
+  ADD CONSTRAINT `User_account_id` FOREIGN KEY (`account_id`) REFERENCES `Account` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

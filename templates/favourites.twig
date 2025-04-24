@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+{% include 'head.twig' %}
+
+<body>
+    {% include 'navigation.twig' %}
+    <div class="container mt-3">
+        <div class="row">
+            {% for fav in favourites %}
+            <div class="col-md-2  mb-3">
+                <div class="card">
+                    <img src="assets/cover_images/{{fav.image}}" class="card-img-top" alt="Book Cover for {{fav.title}}"
+                        style="aspect-ratio: 3/4;object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="min-height: 48px;">
+                            {{fav.title}}
+                        </h5>
+                        <div class="d-flex flex-row justify-content-between">
+                            <a href="/detail.php?id={{fav.book_id}}" class="btn btn-info">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </a>
+                            <form action="/favourites.php" method="post">
+                                <input type="hidden" name="fav_id" value="{{fav.id}}">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <!-- <h1>{{ greeting }}</h1> -->
+
+    </div>
+    {% include 'footer.twig' %}
+</body>
+
+</html>
